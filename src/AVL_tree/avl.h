@@ -4,6 +4,9 @@
 
 #include "avl_node.h"
 #include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
 class AVL
 {
@@ -12,6 +15,7 @@ private:
 	int height;
 
 	void Tree_Rotation (AVL_Node*);
+	void Insert (AVL_Node*, AVL_Node*);
 
 public:
 	// Constructor for the AVL tree. This should initialize all the private member variables and set
@@ -24,7 +28,7 @@ public:
 	// delete_tree() and a tree with the given input file should be created.
 	//
 	// TODO: Write function to input the file
-	void Create_Tree (std::ifstream);
+	void Create_Tree (std::string);
 
 	// Insert:
 	// This option should insert a node in the existing tree. The input integer value should be typed in by
