@@ -1,3 +1,7 @@
+// Author: Tyler Travis
+// Email: tyler.travis@aggiemail.usu.edu
+// A#: A01519795
+
 #include "avl_node.h"
 
 AVL_Node::AVL_Node()

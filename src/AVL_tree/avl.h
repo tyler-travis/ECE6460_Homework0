@@ -1,4 +1,8 @@
-#inlcude "avl_node.h"
+// Author: Tyler Travis
+// Email: tyler.travis@aggiemail.usu.edu
+// A#: A01519795
+
+#include "avl_node.h"
 #include <fstream>
 
 class AVL
