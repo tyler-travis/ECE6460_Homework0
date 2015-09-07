@@ -13,16 +13,18 @@ class AVL
 private:
 	AVL_Node* root;
 
-	void Right_Tree_Rotation (AVL_Node*);
-	void Left_Tree_Rotation (AVL_Node*);
+	void Right_Right_Tree_Rotation (AVL_Node*);
+	void Left_Right_Tree_Rotation (AVL_Node*);
+	void Right_Left_Tree_Rotation (AVL_Node*);
+	void Left_Left_Tree_Rotation (AVL_Node*);
 	void Insert (AVL_Node*, AVL_Node*);
 	void Delete(AVL_Node*, AVL_Node*);
+	void Delete_Tree(AVL_Node*);
 	void Traverse (AVL_Node*, int);
 	int Search (AVL_Node*, int);
 	AVL_Node* Search_Node (int);
 	AVL_Node* Search_Node (AVL_Node*, int);
-	int Check_Heights(AVL_Node*);
-	AVL_Node* Find_Imbalance(AVL_Node*);
+	int Check_Heights(AVL_Node*, int);
 
 public:
 	// Constructor for the AVL tree. This should initialize all the private member variables and set

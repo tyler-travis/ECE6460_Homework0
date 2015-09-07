@@ -40,7 +40,6 @@ void AVL::Insert (int data)
 	// If root is the nullptr then set the new node as the root
 	if(root == nullptr)
 	{
-		node->setHeight(1);
 		root = node;
 	}
 	// Otherwise insert the node into the tree
@@ -60,7 +59,6 @@ void AVL::Insert (AVL_Node* curr_node, AVL_Node* node)
 		{
 			curr_node->setRight(node);
 			node->setParent(curr_node);
-			node->setHeight(curr_node->getHeight() + 1);
 			return;
 		}
 		// If not, countinue down the tree to the right
@@ -76,7 +74,6 @@ void AVL::Insert (AVL_Node* curr_node, AVL_Node* node)
 		{
 			curr_node->setLeft(node);
 			node->setParent(curr_node);
-			node->setHeight(curr_node->getHeight() + 1);
 			return;
 		}
 		else
@@ -202,7 +199,6 @@ void AVL::Delete (AVL_Node* node, AVL_Node* node_to_delete)
 				// Set the left subtree for the parent as the right subtree to the node to move
 				node->getParent()->setLeft(node->getRight());
 				node->getRight()->setParent(node->getParent());
-				node->getRight()->setHeight(node->getHeight());
 			}
 			else
 			{
@@ -232,8 +228,6 @@ void AVL::Delete (AVL_Node* node, AVL_Node* node_to_delete)
 			}
 		}
 
-		// Set the correct height
-		node->setHeight(node_to_delete->getHeight());
 
 		delete node_to_delete;
 		return;
@@ -243,6 +237,22 @@ void AVL::Delete (AVL_Node* node, AVL_Node* node_to_delete)
 	{
 		return Delete(node->getLeft(), node_to_delete);
 	}
+}
+
+void AVL::Delete_Tree ()
+{
+	Delete_Tree(root);
+}
+
+void AVL::Delete_Tree (AVL_Node* node)
+{
+	if (node == nullptr)
+	{
+		return;
+	}
+	Delete_Tree(node->getLeft());
+	Delete_Tree(node->getRight());
+	delete node;
 }
 
 AVL_Node* AVL::Search_Node (int data)
@@ -367,75 +377,113 @@ void AVL::Traverse (AVL_Node* node, int type)
 
 void AVL::Check_Balance ()
 {
-	// Get the height of the left branch
-	int left_height = Check_Heights(root->getLeft());	
-
-	// Get the height of the right branch
-	int right_height = Check_Heights(root->getRight());	
-
-	// Find the balance factor of for the tree
-	int balance_factor = abs(left_height - right_height);
-
-	// If the balance factor is greater than 1 then we need to rebalance the tree
-	if (balance_factor > 1)
-	{
-		// Find which side of the tree we need to go down
-		if (left_height > right_height)
-		{
-			
-		}
-		else
-		{
-
-		}
-	}
+	Check_Heights (root, 0);
 }
 
-int AVL::Check_Heights (AVL_Node* node)
+int AVL::Check_Heights (AVL_Node* node, int height)
 {
-	int left_height = 0; 
-	int right_height = 0;
-	
-	// Check if at the bottom of a branch
-	if (node->getLeft() == nullptr && node->getRight() == nullptr)
+	if (node == nullptr)
 	{
-		return node->getHeight();
+		return height;
 	}
-
-	// Go to the left if possible
-	if (node->getLeft() != nullptr)
+	height++;
+	int right = Check_Heights(node->getRight(), height);
+	int left = Check_Heights(node->getLeft(), height);
+	int balance = left - right;
+	node->setHeight(balance);
+	if (abs(balance) > 1)
 	{
-		left_height = Check_Heights(node->getLeft());
+		// Imbalance is on left side if postive
+		if (balance > 0)
+		{
+			// Imbalance is on left->left
+			if (node->getLeft()->getHeight() > 0)
+			{
+				Left_Left_Tree_Rotation(node);	
+			}
+			// Imbalance is on left->right
+			else
+			{
+				Left_Right_Tree_Rotation(node);	
+			}
+
+		}
+		// Imbalance is on right side if negative
+		else
+		{
+			// Imbalance is on right->left
+			if (node->getRight()->getHeight() > 0)
+			{
+				Right_Left_Tree_Rotation(node);	
+			}
+			// Imbalance is on right->right
+			else
+			{
+				Right_Right_Tree_Rotation(node);	
+			}
+		}
 	}
+	return 0;
+}
 
-	// Go to the right if possible
-	if (node->getRight() != nullptr)
-	{
-		right_height = Check_Heights(node->getRight());
-	}
 
-	// Find out what to return
-	if (right_height > left_height)
+void AVL::Right_Right_Tree_Rotation (AVL_Node* node)
+{
+	AVL_Node* right_subtree = node->getRight();
+	AVL_Node* right_right_subtree = node->getRight()->getRight();
+
+	// Correctly set parent for right subtree
+	if (node == root)
 	{
-		return right_height;
+		root = right_subtree;
 	}
 	else
 	{
-		return left_height;
+		right_subtree->setParent(node->getParent());
 	}
+
+	// Correctly set left side of rotation
+	right_subtree->setLeft(node);
+	node->setParent(right_subtree);
+
+	node->setRight(right_right_subtree);
+
+	right_right_subtree->setParent(node);
 }
 
-AVL_Node* AVL::Find_Imbalance (AVL_Node* node)
+void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 {
-	return nullptr;
+	AVL_Node* right_subtree = node->getRight();
+	AVL_Node* right_left_subtree = node->getRight()->getLeft();
+
+
 }
 
-void AVL::Right_Tree_Rotation (AVL_Node* node)
+void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
 {
+	AVL_Node* left_subtree = node->getLeft();
+	AVL_Node* left_left_subtree = node->getLeft()->getLeft();
 
+	// Correctly set parent for right subtree
+	if (node == root)
+	{
+		root = left_subtree;
+	}
+	else
+	{
+		left_subtree->setParent(node->getParent());
+	}
+
+	// Correctly set left side of rotation
+	left_subtree->setRight(node);
+	node->setParent(left_subtree);
+
+	node->setLeft(left_left_subtree);
+
+	left_left_subtree->setParent(node);
 }
 
-void AVL::Left_Tree_Rotation (AVL_Node* node)
+void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 {
 
 }
