@@ -6,6 +6,17 @@
 
 AVL_Node::AVL_Node()
 {
+	data = 0;
+	height = 0;
+	parent = nullptr;
+	left = nullptr;
+	right = nullptr;
+}
+
+AVL_Node::AVL_Node(int _data)
+{
+	data = _data;
+	height = 0;
 	parent = nullptr;
 	left = nullptr;
 	right = nullptr;
@@ -43,22 +54,27 @@ void AVL_Node::setHeight (int _height)
 	height = _height;
 }
 
-int AVL_Node::getData ();
+int AVL_Node::getData ()
 {
 	return data;
 }
 
-int AVL_Node::getHeight ();
+int AVL_Node::getHeight ()
 {
 	return height;
 }
 
-AVL_Node* AVL_Node::getRight ();
+AVL_Node* AVL_Node::getRight ()
 {
 	return right;
 }
 
-AVL_Node* AVL_Node::getLeft ();
+AVL_Node* AVL_Node::getLeft ()
 {
 	return left;
+}
+
+AVL_Node* AVL_Node::getParent ()
+{
+	return parent;
 }

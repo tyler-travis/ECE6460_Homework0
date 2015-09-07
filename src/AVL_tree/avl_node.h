@@ -16,7 +16,8 @@ public:
 	// This takes the address of the parent node
 	// and the left and right nodes if they exist
 	AVL_Node ();
-	AVL_Node (AVL_Node* _parent, AVL_Node* _left = nullptr, AVL_Node* _right = nullptr);
+	AVL_Node (int);
+	AVL_Node (AVL_Node*, AVL_Node*, AVL_Node*);
 	void setLeft (AVL_Node*);
 	void setRight (AVL_Node*);
 	void setParent (AVL_Node*);
@@ -26,4 +27,5 @@ public:
 	int getHeight ();
 	AVL_Node* getRight ();
 	AVL_Node* getLeft ();
+	AVL_Node* getParent ();
 };
