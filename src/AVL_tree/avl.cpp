@@ -465,6 +465,20 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 	{
 		right_left_subtree->setParent(node->getParent());
 	}
+
+	// Move the children around to the correct position
+	
+	right_left_subtree->setLeft(node);
+	node->setParent(right_left_subtree);
+
+	right_left_subtree->setRight(right_subtree);
+	right_subtree->setParent(right_left_subtree);
+	
+	node->setRight(right_left_subtree->getLeft());
+	right_left_subtree->getLeft()->setParent(node);
+
+	right_subtree->setLeft(right_left_subtree->getRight());
+	right_left_subtree->setParent(right_subtree);
 	
 }
 
@@ -494,5 +508,20 @@ void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
 
 void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 {
+	AVL_Node* left_subtree = node->getLeft();
+	AVL_Node* left_right_subtree = node->getLeft()->getRight();
+
+	// Correctly set paret for right left subtree
+	if (node == root)
+	{
+		root = left_right_subtree;
+	}
+	else
+	{
+		left_right_subtree->setParent(node->getParent());
+	}
+
+	// Move the children around to the correct position
+	
 
 }

@@ -1,4 +1,4 @@
-CC = clang++
+CC = g++
 CFLAGS = -Wall -c -g --std=c++11
 LDFLAGS = -lm
 MAIN_DIR = src
