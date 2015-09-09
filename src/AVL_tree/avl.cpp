@@ -456,7 +456,16 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 	AVL_Node* right_subtree = node->getRight();
 	AVL_Node* right_left_subtree = node->getRight()->getLeft();
 
-
+	// Correctly set paret for right left subtree
+	if (node == root)
+	{
+		root = right_left_subtree;
+	}
+	else
+	{
+		right_left_subtree->setParent(node->getParent());
+	}
+	
 }
 
 void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
