@@ -443,6 +443,9 @@ void AVL::Right_Right_Tree_Rotation (AVL_Node* node)
 	}
 
 	// Correctly set left side of rotation
+	//
+	// TODO: Check if children are null
+	// IMPORTANT 
 	right_subtree->setLeft(node);
 	node->setParent(right_subtree);
 
@@ -467,18 +470,21 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 	}
 
 	// Move the children around to the correct position
-	
-	right_left_subtree->setLeft(node);
-	node->setParent(right_left_subtree);
-
-	right_left_subtree->setRight(right_subtree);
-	right_subtree->setParent(right_left_subtree);
+	//
+	// TODO: Check if children are null
+	// IMPORTANT 
 	
 	node->setRight(right_left_subtree->getLeft());
 	right_left_subtree->getLeft()->setParent(node);
 
 	right_subtree->setLeft(right_left_subtree->getRight());
 	right_left_subtree->setParent(right_subtree);
+	
+	right_left_subtree->setLeft(node);
+	node->setParent(right_left_subtree);
+
+	right_left_subtree->setRight(right_subtree);
+	right_subtree->setParent(right_left_subtree);
 	
 }
 
@@ -498,6 +504,9 @@ void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
 	}
 
 	// Correctly set left side of rotation
+	//
+	// TODO: Check if children are null
+	// IMPORTANT 
 	left_subtree->setRight(node);
 	node->setParent(left_subtree);
 
@@ -522,6 +531,19 @@ void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 	}
 
 	// Move the children around to the correct position
-	
+	//
+	// TODO: Check if children are null
+	// IMPORTANT 
 
+	left_subtree->setRight(left_right_subtree->getLeft());
+	left_right_subtree->getLeft()->setParent(left_subtree);
+
+	node->setLeft(left_right_subtree->getRight());
+	left_right_subtree->setParent(node);
+	
+	left_right_subtree->setLeft(left_subtree);
+	left_subtree->setParent(left_right_subtree);
+
+	left_right_subtree->setRight(node);
+	node->setParent(left_right_subtree);
 }
