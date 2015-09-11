@@ -58,6 +58,9 @@ int main(int argc, char** argv)
 				break;
 			case 8:
 				break;
+			case 9:
+				tree.Pretty_Print();
+				break;
 			default:
 				std::cout << "Wrong response, please re-enter a correct choice.";
 		}

@@ -25,6 +25,7 @@ private:
 	AVL_Node* Search_Node (int);
 	AVL_Node* Search_Node (AVL_Node*, int);
 	int Check_Heights(AVL_Node*, int);
+	void Pretty_Print(AVL_Node*, int);
 
 public:
 	// Constructor for the AVL tree. This should initialize all the private member variables and set
@@ -88,4 +89,6 @@ public:
 	//
 	// TODO: 
 	void Check_Balance ();
+
+	void Pretty_Print();
 };

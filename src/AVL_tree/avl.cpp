@@ -450,12 +450,19 @@ void AVL::Right_Right_Tree_Rotation (AVL_Node* node)
 	// Correctly set parent for right subtree
 	if (node == root)
 	{
-		std::cout << "Replace root" << std::endl;
 		root = right_subtree;
 	}
 	else
 	{
 		right_subtree->setParent(node->getParent());
+		if (node->getParent()->getLeft() == node)
+		{
+			node->getParent()->setLeft(right_subtree);
+		}
+		else
+		{
+			node->getParent()->setRight(right_subtree);
+		}
 	}
 
 	// Correctly set left side of rotation
@@ -480,7 +487,7 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 	AVL_Node* right_subtree = node->getRight();
 	AVL_Node* right_left_subtree = node->getRight()->getLeft();
 
-	// Correctly set paret for right left subtree
+	// Correctly set parent for right left subtree
 	if (node == root)
 	{
 		root = right_left_subtree;
@@ -488,6 +495,14 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 	else
 	{
 		right_left_subtree->setParent(node->getParent());
+		if (node->getParent()->getLeft() == node)
+		{
+			node->getParent()->setLeft(right_left_subtree);
+		}
+		else
+		{
+			node->getParent()->setRight(right_left_subtree);
+		}
 	}
 
 	// Move the children around to the correct position
@@ -500,13 +515,12 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 	else
 	{
 		node->setRight(nullptr);
-
 	}
 
 	if (right_left_subtree->getRight() != nullptr)
 	{
 		right_subtree->setLeft(right_left_subtree->getRight());
-		right_left_subtree->setParent(right_subtree);
+		right_left_subtree->getRight()->setParent(right_subtree);
 	}
 	else
 	{
@@ -534,6 +548,14 @@ void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
 	else
 	{
 		left_subtree->setParent(node->getParent());
+		if (node->getParent()->getLeft() == node)
+		{
+			node->getParent()->setLeft(left_subtree);
+		}
+		else
+		{
+			node->getParent()->setRight(left_subtree);
+		}
 	}
 
 	// Correctly set left side of rotation
@@ -566,12 +588,17 @@ void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 	else
 	{
 		left_right_subtree->setParent(node->getParent());
+		if (node->getParent()->getLeft() == node)
+		{
+			node->getParent()->setLeft(left_right_subtree);
+		}
+		else
+		{
+			node->getParent()->setRight(left_right_subtree);
+		}
 	}
 
 	// Move the children around to the correct position
-	//
-	// TODO: Check if children are null
-	// IMPORTANT 
 
 	if (left_right_subtree->getLeft() != nullptr)
 	{
@@ -586,7 +613,7 @@ void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 	if (left_right_subtree->getRight() != nullptr)
 	{
 		node->setLeft(left_right_subtree->getRight());
-		left_right_subtree->setParent(node);
+		left_right_subtree->getRight()->setParent(node);
 	}
 	else
 	{
@@ -598,4 +625,30 @@ void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 
 	left_right_subtree->setRight(node);
 	node->setParent(left_right_subtree);
+}
+
+void AVL::Pretty_Print()
+{
+	Pretty_Print(root, 0);
+}
+
+void AVL::Pretty_Print(AVL_Node* node, int space)
+{
+	if (node != nullptr)
+	{
+		if (node->getRight())
+		{
+			Pretty_Print(node->getRight(), space+4);
+		}
+		for (int i = 0; i < space; ++i)
+		{
+			std::cout << " ";
+		}
+		std::cout << node->getData() << std::endl;
+		if (node->getLeft())
+		{
+			Pretty_Print(node->getLeft(), space+4);
+		}
+		
+	}
 }
