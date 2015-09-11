@@ -4,51 +4,79 @@
 
 #include "AVL_tree/avl.h"
 #include <iostream>
+#include <string>
+
+void printMenu();
 
 int main(int argc, char** argv)
 {
-	AVL tree, tree1;
-	
-	std::string fileName = "input.txt";
+	int choice;
 
-	tree1.Create_Tree(fileName);
+	AVL tree;
 
-	std::cout << "Inserting" << std::endl;
-	tree.Insert(4);
-	tree.Insert(5);
-	tree.Insert(3);
-	tree.Insert(2);
-	tree.Insert(1);
-	tree.Insert(7);
-	tree.Insert(9);
-	tree.Insert(8);
-	tree.Insert(6);
+	std::string fileName;
+	int inputInteger;
 
-	tree.Traverse(2);
-
-	std::cout << "Deleting 1" << std::endl;
-	tree.Delete(1);
-
-	tree.Traverse(2);
-
-	//std::cout << "Deleting 2" << std::endl;
-	//tree.Delete(2);
-
-	//tree.Traverse(2);
-
-	std::cout << "Deleting 3" << std::endl;
-	tree.Delete(3);
-
-	tree.Traverse(2);
-
-	std::cout << "Deleting 4" << std::endl;
-	tree.Delete(4);
-	
-	tree.Traverse(2);
+	do
+	{
+		printMenu();
+		std::cin >> choice;
 
 
-	std::cout << "Finding 6" << std::endl;
-	std::cout << "6 found at " << tree.Search(6) << " height" << std::endl;
+		switch(choice)
+		{
+			case 1:
+				std::cout << "File to read from: ";
+				std::cin >> fileName;
+				tree.Create_Tree(fileName);
+				break;
+			case 2:
+				std::cout << "Integer to enter: ";
+				std::cin >> inputInteger;
+				tree.Insert(inputInteger);
+				break;
+			case 3:
+				std::cout << "Integer to delete: ";
+				std::cin >> inputInteger;
+				tree.Delete(inputInteger);
+				break;
+			case 4:
+				std::cout << "Integer to search for: ";
+				std::cin >> inputInteger;
+				tree.Search(inputInteger);
+				break;
+			case 5:
+				std::cout << "Enter number for traversal\n1. Pre Order\n2. Post Order\n3. In Order ";
+				std::cin >> inputInteger;
+				tree.Traverse(inputInteger);
+				break;
+			case 6:
+				tree.Delete_Tree();
+				break;
+			case 7:
+				tree.Check_Balance();
+				break;
+			case 8:
+				break;
+			default:
+				std::cout << "Wrong response, please re-enter a correct choice.";
+		}
+	} while(choice != 8);
+
 
 	return 0;
+}
+
+void printMenu()
+{
+	std::cout << "AVL-Tree Menu" << std::endl;
+	std::cout << "1. Create Tree" << std::endl;
+	std::cout << "2. Insertion" << std::endl;
+	std::cout << "3. Deleteion" << std::endl;
+	std::cout << "4. Search" << std::endl;
+	std::cout << "5. Traversal" << std::endl;
+	std::cout << "6. Delete Tree" << std::endl;
+	std::cout << "7. Check Balance" << std::endl;
+	std::cout << "8. Exit" << std::endl;
+	std::cout << "Enter Choose (1-8): ";
 }

@@ -20,16 +20,23 @@ void AVL::Create_Tree (std::string inputFile)
 		std::cout << "Error Opening File" << std::endl;
 		return;	
 	}
+
+	// Check to see if there is already a tree
+	if (root != nullptr)
+	{
+		Delete_Tree();
+	}
 	
 	// Temorary variable to read in the data from the file
 	int inputData;
 	while (fileIn >> inputData)
 	{
 		// Insert the data into the file
+		std::cout << "Inserting: " << inputData << std::endl;
 		Insert(inputData);
 	}
 	// Traverse the newly created tree in post-order
-	Traverse(1);
+	Traverse(2);
 }
 
 void AVL::Insert (int data)
@@ -47,6 +54,8 @@ void AVL::Insert (int data)
 	{
 		Insert (root, node);
 	}
+	Check_Balance();
+	//Traverse(2);
 }
 
 void AVL::Insert (AVL_Node* curr_node, AVL_Node* node)
@@ -333,6 +342,7 @@ void AVL::Traverse (int type)
 
 			std::cout << "Error, " << type << " is not a valid number to choose from" << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 void AVL::Traverse (AVL_Node* node, int type)
@@ -349,7 +359,7 @@ void AVL::Traverse (AVL_Node* node, int type)
 		// 2. Traverse the left subtree by recursively calling the pre-order function
 		// 3. Traverse the right subtree by recursively calling the pre-order fuction
 		case 1:
-			std::cout << node->getData() << std::endl;
+			std::cout << node->getData() << " ";
 			Traverse (node->getLeft(), 1);
 			Traverse (node->getRight(), 1);
 			break;
@@ -359,7 +369,7 @@ void AVL::Traverse (AVL_Node* node, int type)
 		// 3. Traverse the right subtree by recursively calling the in-order function
 		case 2:
 			Traverse (node->getLeft(), 2);
-			std::cout << node->getData() << std::endl;
+			std::cout << node->getData() << " ";
 			Traverse (node->getRight(), 2);
 			break;
 		// Post-order
@@ -369,7 +379,7 @@ void AVL::Traverse (AVL_Node* node, int type)
 		case 3:
 			Traverse (node->getLeft(), 3);
 			Traverse (node->getRight(), 3);
-			std::cout << node->getData() << std::endl;
+			std::cout << node->getData() << " ";
 			break;
 	}
 	return;
@@ -384,9 +394,9 @@ int AVL::Check_Heights (AVL_Node* node, int height)
 {
 	if (node == nullptr)
 	{
-		return height;
+		//std::cout << "\tHeight: " << height << std::endl;
+		return 0;
 	}
-	height++;
 	int right = Check_Heights(node->getRight(), height);
 	int left = Check_Heights(node->getLeft(), height);
 	int balance = left - right;
@@ -423,18 +433,24 @@ int AVL::Check_Heights (AVL_Node* node, int height)
 			}
 		}
 	}
-	return 0;
+	if (left > right)
+	{
+		return height + 1 + left;
+	}
+	return height + 1 + right;
 }
 
 
 void AVL::Right_Right_Tree_Rotation (AVL_Node* node)
 {
+	std::cout << "Right Right Rotation Needed" << std::endl;
 	AVL_Node* right_subtree = node->getRight();
-	AVL_Node* right_right_subtree = node->getRight()->getRight();
+//	AVL_Node* right_right_subtree = node->getRight()->getRight();
 
 	// Correctly set parent for right subtree
 	if (node == root)
 	{
+		std::cout << "Replace root" << std::endl;
 		root = right_subtree;
 	}
 	else
@@ -443,19 +459,24 @@ void AVL::Right_Right_Tree_Rotation (AVL_Node* node)
 	}
 
 	// Correctly set left side of rotation
-	//
-	// TODO: Check if children are null
-	// IMPORTANT 
+
+	if (right_subtree->getLeft() != nullptr)
+	{
+		node->setRight(right_subtree->getLeft());
+		node->getRight()->setParent(node);
+	}
+	else
+	{
+		node->setRight(nullptr);
+	}
+
 	right_subtree->setLeft(node);
 	node->setParent(right_subtree);
-
-	node->setRight(right_right_subtree);
-
-	right_right_subtree->setParent(node);
 }
 
 void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 {
+	std::cout << "Right Left Rotation Needed" << std::endl;
 	AVL_Node* right_subtree = node->getRight();
 	AVL_Node* right_left_subtree = node->getRight()->getLeft();
 
@@ -470,15 +491,27 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 	}
 
 	// Move the children around to the correct position
-	//
-	// TODO: Check if children are null
-	// IMPORTANT 
 	
-	node->setRight(right_left_subtree->getLeft());
-	right_left_subtree->getLeft()->setParent(node);
+	if (right_left_subtree->getLeft() != nullptr)
+	{
+		node->setRight(right_left_subtree->getLeft());
+		right_left_subtree->getLeft()->setParent(node);
+	}
+	else
+	{
+		node->setRight(nullptr);
 
-	right_subtree->setLeft(right_left_subtree->getRight());
-	right_left_subtree->setParent(right_subtree);
+	}
+
+	if (right_left_subtree->getRight() != nullptr)
+	{
+		right_subtree->setLeft(right_left_subtree->getRight());
+		right_left_subtree->setParent(right_subtree);
+	}
+	else
+	{
+		right_subtree->setLeft(nullptr);
+	}
 	
 	right_left_subtree->setLeft(node);
 	node->setParent(right_left_subtree);
@@ -490,8 +523,8 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 
 void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
 {
+	std::cout << "Left Left Rotation Needed" << std::endl;
 	AVL_Node* left_subtree = node->getLeft();
-	AVL_Node* left_left_subtree = node->getLeft()->getLeft();
 
 	// Correctly set parent for right subtree
 	if (node == root)
@@ -504,19 +537,24 @@ void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
 	}
 
 	// Correctly set left side of rotation
-	//
-	// TODO: Check if children are null
-	// IMPORTANT 
+
+	if (left_subtree->getRight() != nullptr)
+	{
+		node->setLeft(left_subtree->getRight());
+		node->getLeft()->setParent(node);
+	}
+	else
+	{
+		node->setLeft(nullptr);
+	}
+	
 	left_subtree->setRight(node);
 	node->setParent(left_subtree);
-
-	node->setLeft(left_left_subtree);
-
-	left_left_subtree->setParent(node);
 }
 
 void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 {
+	std::cout << "Left Right Rotation Needed" << std::endl;
 	AVL_Node* left_subtree = node->getLeft();
 	AVL_Node* left_right_subtree = node->getLeft()->getRight();
 
@@ -535,11 +573,25 @@ void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 	// TODO: Check if children are null
 	// IMPORTANT 
 
-	left_subtree->setRight(left_right_subtree->getLeft());
-	left_right_subtree->getLeft()->setParent(left_subtree);
+	if (left_right_subtree->getLeft() != nullptr)
+	{
+		left_subtree->setRight(left_right_subtree->getLeft());
+		left_right_subtree->getLeft()->setParent(left_subtree);
+	}
+	else
+	{
+		left_subtree->setRight(nullptr);
+	}
 
-	node->setLeft(left_right_subtree->getRight());
-	left_right_subtree->setParent(node);
+	if (left_right_subtree->getRight() != nullptr)
+	{
+		node->setLeft(left_right_subtree->getRight());
+		left_right_subtree->setParent(node);
+	}
+	else
+	{
+		node->setLeft(nullptr);
+	}
 	
 	left_right_subtree->setLeft(left_subtree);
 	left_subtree->setParent(left_right_subtree);
