@@ -35,8 +35,6 @@ void AVL::Create_Tree (std::string inputFile)
 		std::cout << "Inserting: " << inputData << std::endl;
 		Insert(inputData);
 	}
-	// Traverse the newly created tree in post-order
-	Traverse(2);
 }
 
 void AVL::Insert (int data)
@@ -55,7 +53,6 @@ void AVL::Insert (int data)
 		Insert (root, node);
 	}
 	Check_Balance();
-	//Traverse(2);
 }
 
 void AVL::Insert (AVL_Node* curr_node, AVL_Node* node)
@@ -106,7 +103,6 @@ void AVL::Delete (int data)
 	// If the node has no children just delete it
 	else if (node->getRight() == nullptr && node->getLeft() == nullptr)
 	{
-		std::cout << "No Children" << std::endl;
 		if (node == root)
 		{
 			root = nullptr;
@@ -126,7 +122,6 @@ void AVL::Delete (int data)
 	// If it has one child, swith the child with the parent and delete the parent
 	else if (node->getRight() == nullptr)
 	{
-		std::cout << "One Children" << std::endl;
 		if (node == root)
 		{
 			root = node->getLeft();
@@ -148,7 +143,6 @@ void AVL::Delete (int data)
 	}
 	else if (node->getLeft() == nullptr)
 	{
-		std::cout << "One Children" << std::endl;
 		if (node == root)
 		{
 			root = node->getRight();
@@ -169,7 +163,6 @@ void AVL::Delete (int data)
 	// Node to delete has two children
 	else
 	{
-		std::cout << "Two Children" << std::endl;
 		Delete(node->getRight(), node);
 	}
 	//Traverse(1);
@@ -177,7 +170,6 @@ void AVL::Delete (int data)
 
 void AVL::Delete (AVL_Node* node, AVL_Node* node_to_delete)
 {
-	std::cout << "Node: " << node->getData() << std::endl;
 	// Found the smallest value to the right of the node to delete
 	if (node->getLeft() == nullptr)
 	{
@@ -251,6 +243,7 @@ void AVL::Delete (AVL_Node* node, AVL_Node* node_to_delete)
 void AVL::Delete_Tree ()
 {
 	Delete_Tree(root);
+	root = nullptr;
 }
 
 void AVL::Delete_Tree (AVL_Node* node)
@@ -433,6 +426,7 @@ int AVL::Check_Heights (AVL_Node* node, int height)
 			}
 		}
 	}
+	std::cout << "Check_Balance: Balance Factor of " << node->getData() << " is " << balance << std::endl;
 	if (left > right)
 	{
 		return height + 1 + left;
@@ -443,7 +437,6 @@ int AVL::Check_Heights (AVL_Node* node, int height)
 
 void AVL::Right_Right_Tree_Rotation (AVL_Node* node)
 {
-	std::cout << "Right Right Rotation Needed" << std::endl;
 	AVL_Node* right_subtree = node->getRight();
 //	AVL_Node* right_right_subtree = node->getRight()->getRight();
 
@@ -483,7 +476,6 @@ void AVL::Right_Right_Tree_Rotation (AVL_Node* node)
 
 void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 {
-	std::cout << "Right Left Rotation Needed" << std::endl;
 	AVL_Node* right_subtree = node->getRight();
 	AVL_Node* right_left_subtree = node->getRight()->getLeft();
 
@@ -537,7 +529,6 @@ void AVL::Right_Left_Tree_Rotation (AVL_Node* node)
 
 void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
 {
-	std::cout << "Left Left Rotation Needed" << std::endl;
 	AVL_Node* left_subtree = node->getLeft();
 
 	// Correctly set parent for right subtree
@@ -576,7 +567,6 @@ void AVL::Left_Left_Tree_Rotation (AVL_Node* node)
 
 void AVL::Left_Right_Tree_Rotation (AVL_Node* node)
 {
-	std::cout << "Left Right Rotation Needed" << std::endl;
 	AVL_Node* left_subtree = node->getLeft();
 	AVL_Node* left_right_subtree = node->getLeft()->getRight();
 
