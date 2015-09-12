@@ -2,6 +2,9 @@
 // Email: tyler.travis@aggiemail.usu.edu
 // A#: A01519795
 
+#ifndef AVL_NODE_H
+#define AVL_NODE_H
+
 class AVL_Node
 {
 private:
@@ -29,3 +32,5 @@ public:
 	AVL_Node* getLeft ();
 	AVL_Node* getParent ();
 };
+
+#endif

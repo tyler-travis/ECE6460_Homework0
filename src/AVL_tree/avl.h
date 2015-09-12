@@ -2,16 +2,23 @@
 // Email: tyler.travis@aggiemail.usu.edu
 // A#: A01519795
 
+#ifndef AVL_H
+#define AVL_H
+
 #include "avl_node.h"
 #include <fstream>
 #include <iostream>
+#include <ostream>
 #include <string>
 #include <cmath>
+
 
 class AVL
 {
 private:
 	AVL_Node* root;
+
+	std::ofstream fileOut;
 
 	void Right_Right_Tree_Rotation (AVL_Node*);
 	void Left_Right_Tree_Rotation (AVL_Node*);
@@ -31,6 +38,8 @@ public:
 	// Constructor for the AVL tree. This should initialize all the private member variables and set
 	// everything to a good state.
 	AVL ();
+
+	void setFileOut(std::string);
 
 	// Create Tree:
 	// This option should create a tree by reading an input file which contains one integer per line that
@@ -92,3 +101,5 @@ public:
 
 	void Pretty_Print();
 };
+
+#endif

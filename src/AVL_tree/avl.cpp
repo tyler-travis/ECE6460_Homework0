@@ -9,6 +9,11 @@ AVL::AVL ()
 	root = nullptr;
 }
 
+void AVL::setFileOut(std::string _fileOut)
+{
+	fileOut.open(_fileOut);
+}
+
 void AVL::Create_Tree (std::string inputFile)
 {
 	// Create file input stream
@@ -353,6 +358,7 @@ void AVL::Traverse (AVL_Node* node, int type)
 		// 3. Traverse the right subtree by recursively calling the pre-order fuction
 		case 1:
 			std::cout << node->getData() << " ";
+			fileOut << node->getData() << " ";
 			Traverse (node->getLeft(), 1);
 			Traverse (node->getRight(), 1);
 			break;
@@ -363,6 +369,7 @@ void AVL::Traverse (AVL_Node* node, int type)
 		case 2:
 			Traverse (node->getLeft(), 2);
 			std::cout << node->getData() << " ";
+			fileOut << node->getData() << " ";
 			Traverse (node->getRight(), 2);
 			break;
 		// Post-order
@@ -372,7 +379,7 @@ void AVL::Traverse (AVL_Node* node, int type)
 		case 3:
 			Traverse (node->getLeft(), 3);
 			Traverse (node->getRight(), 3);
-			std::cout << node->getData() << " ";
+			fileOut << node->getData() << " ";
 			break;
 	}
 	return;
@@ -426,6 +433,7 @@ int AVL::Check_Heights (AVL_Node* node, int height)
 			}
 		}
 	}
+	fileOut << "Check_Balance: Balance Factor of " << node->getData() << " is " << balance << std::endl;
 	std::cout << "Check_Balance: Balance Factor of " << node->getData() << " is " << balance << std::endl;
 	if (left > right)
 	{

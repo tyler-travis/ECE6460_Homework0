@@ -2,9 +2,11 @@
 // Email: tyler.travis@aggiemail.usu.edu
 // A#: A01519795
 
+
 #include "AVL_tree/avl.h"
 #include <iostream>
 #include <string>
+
 
 void printMenu();
 
@@ -12,7 +14,12 @@ int main(int argc, char** argv)
 {
 	int choice;
 
+
 	AVL tree;
+
+	std::ofstream fileOut("Travis-A01519795.txt");
+
+	tree.setFileOut("Travis-A01519795.txt");
 
 	std::string fileName;
 	int inputInteger;
@@ -30,6 +37,7 @@ int main(int argc, char** argv)
 				std::cin >> fileName;
 				tree.Create_Tree(fileName);
 				std::cout << "Create Tree: ";
+				fileOut << "Create Tree: ";
 				tree.Traverse(2);
 				break;
 			case 2:
@@ -44,22 +52,26 @@ int main(int argc, char** argv)
 				std::cin >> inputInteger;
 				tree.Delete(inputInteger);
 				std::cout << "Deleted: " << inputInteger << std::endl;
+				fileOut << "Deleted: " << inputInteger << std::endl;
 				tree.Traverse(2);
 				break;
 			case 4:
 				std::cout << "Integer to search for: ";
 				std::cin >> inputInteger;
 				std::cout << "Search: Height of " << inputInteger << " is" << tree.Search(inputInteger) << std::endl;
+				fileOut << "Search: Height of " << inputInteger << " is" << tree.Search(inputInteger) << std::endl;
 				break;
 			case 5:
 				std::cout << "Enter number for traversal\n1. Pre Order\n2. Post Order\n3. In Order\nEnter: ";
 				std::cin >> inputInteger;
 				std::cout << "Traversal: " << std::endl;
+				fileOut << "Traversal: " << std::endl;
 				tree.Traverse(inputInteger);
 				break;
 			case 6:
 				tree.Delete_Tree();
 				std::cout << "Delete_Tree: Tree Deleted" << std::endl;
+				fileOut << "Delete_Tree: Tree Deleted" << std::endl;
 				break;
 			case 7:
 				tree.Check_Balance();
